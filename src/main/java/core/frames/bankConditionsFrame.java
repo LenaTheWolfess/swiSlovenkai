@@ -1,0 +1,354 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package core.frames;
+
+import core.db.entity.BankCondition;
+import core.db.entity.Condition;
+import core.db.entity.Mark;
+import core.db.impl.BankConditionDaoImpl;
+import core.db.impl.ConditionDaoImpl;
+import core.db.ints.BankConditionDao;
+import core.db.ints.ConditionDao;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author Slavomír
+ */
+public class bankConditionsFrame extends javax.swing.JFrame
+{
+
+					private ConditionDao conditionDao = new ConditionDaoImpl();
+					private BankConditionDao bankConditionDao = new BankConditionDaoImpl();
+					private bankFrame parent = null;
+					private long bankId;
+
+					public bankConditionsFrame(Long idB, bankFrame aThis)
+					{
+										initComponents();
+										this.bankId = idB;
+										this.parent = aThis;
+										bankaConditionIdBanky.setText("Id Tejto Banky je : " + idB);
+										prepareAvailableConditionComboBox();
+										prepareBankConditionTable();
+										prepareMarkComboBox();
+					}
+
+					public void prepareAvailableConditionComboBox()
+					{
+										List<Condition> conditions = conditionDao.getAll();
+										List<BankCondition> bankConditions = bankConditionDao.getByBankId(bankId);
+										
+										List<Long> usedIdConditionList = new ArrayList<>();
+										
+										for(BankCondition bc : bankConditions)
+										{
+															usedIdConditionList.add(bc.getIdC());
+										}
+										
+										for(Condition cn : conditions)
+										{
+															/*if is condition used by bank*/
+															if(usedIdConditionList.contains(cn.getId()))
+																				continue;
+															
+															bankConditionAvailableComboBox.addItem(cn);
+										}
+					}
+
+					public void prepareBankConditionTable()
+					{
+
+										DefaultTableModel tableModel = (DefaultTableModel) bankBankConditions.getModel();
+										List<Condition> conditions = conditionDao.getAll();
+										bankBankConditions.removeAll();
+
+										List<BankCondition> bankConditions = bankConditionDao.getByBankId(bankId);
+
+										tableModel.setNumRows(bankConditions.size());
+										for(int i = 0; i < bankConditions.size(); i++)
+										{
+															BankCondition bc = bankConditions.get(i);
+															Long id = bc.getId();
+
+															String description = "";
+															for(Condition con : conditions)
+															{
+																				if(con.getId().equals(bc.getIdC()))
+																				{
+																									description = description + con.getDescription();
+																									break;
+																				}
+															}
+
+															boolean valued = (bc.getValue() != null);
+
+															if(valued)
+															{
+																				/*mark*/
+																				int mark = bc.getMark().intValue();
+																				switch(mark)
+																				{
+																									case 0:
+																														description = description + " = ";
+																														break;
+																									case 1:
+																														description = description + " >= ";
+																														break;
+																									case 2:
+																														description = description + " > ";
+																														break;
+																									case -1:
+																														description = description + " <= ";
+																														break;
+																									case -2:
+																														description = description + " < ";
+																														break;
+																									default:
+																														break;
+																				}
+																				/*value*/
+
+																				description = description + bc.getValue();
+
+															}
+
+															description = description + " ( " + (bc.getChangeInterestRate()) + "% )";
+
+															tableModel.setValueAt(id, i, 0);
+															tableModel.setValueAt(description, i, 1);
+										}
+					}
+
+					private void prepareMarkComboBox()
+					{
+										bankConditionMarkComboBox.removeAllItems();
+										bankConditionMarkComboBox.addItem(new Mark(0L, "="));
+										bankConditionMarkComboBox.addItem(new Mark(1L, ">="));
+										bankConditionMarkComboBox.addItem(new Mark(-1L, "<="));
+										bankConditionMarkComboBox.addItem(new Mark(2L, ">"));
+										bankConditionMarkComboBox.addItem(new Mark(-2L, "<"));
+										bankConditionMarkComboBox.setSelectedIndex(0);
+					}
+
+					/**
+					 * Creates new form bankConditionsFrame
+					 */
+					/**
+					 * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+					 */
+					@SuppressWarnings("unchecked")
+     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+     private void initComponents()
+     {
+
+          jScrollPane3 = new javax.swing.JScrollPane();
+          bankBankConditions = new javax.swing.JTable();
+          bankConditionMarkComboBox = new javax.swing.JComboBox();
+          bankConditionValue = new javax.swing.JTextField();
+          bankConditionPridaj = new javax.swing.JButton();
+          bankConditionAvailableComboBox = new javax.swing.JComboBox();
+          bankConditionInterestRateLabel = new javax.swing.JLabel();
+          bankConditionInterestRateText = new javax.swing.JTextField();
+          jLabel1 = new javax.swing.JLabel();
+          jLabel2 = new javax.swing.JLabel();
+          bankaConditionIdBanky = new javax.swing.JLabel();
+
+          bankBankConditions.setModel(new javax.swing.table.DefaultTableModel(
+               new Object [][]
+               {
+                    {null, null},
+                    {null, null},
+                    {null, null},
+                    {null, null}
+               },
+               new String []
+               {
+                    "Id", "Description"
+               }
+          )
+          {
+               Class[] types = new Class []
+               {
+                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+               };
+
+               public Class getColumnClass(int columnIndex)
+               {
+                    return types [columnIndex];
+               }
+          });
+          jScrollPane3.setViewportView(bankBankConditions);
+
+          bankConditionMarkComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+          bankConditionMarkComboBox.addActionListener(new java.awt.event.ActionListener()
+          {
+               public void actionPerformed(java.awt.event.ActionEvent evt)
+               {
+                    bankConditionMarkComboBoxActionPerformed(evt);
+               }
+          });
+
+          bankConditionValue.setText("500");
+
+          bankConditionPridaj.setText("Pridať");
+          bankConditionPridaj.addActionListener(new java.awt.event.ActionListener()
+          {
+               public void actionPerformed(java.awt.event.ActionEvent evt)
+               {
+                    bankConditionPridajActionPerformed(evt);
+               }
+          });
+
+          bankConditionInterestRateLabel.setDisplayedMnemonic('I');
+          bankConditionInterestRateLabel.setText("Zmena úrokovej miery");
+
+          bankConditionInterestRateText.setText("12.0");
+          bankConditionInterestRateText.addActionListener(new java.awt.event.ActionListener()
+          {
+               public void actionPerformed(java.awt.event.ActionEvent evt)
+               {
+                    bankConditionInterestRateTextActionPerformed(evt);
+               }
+          });
+
+          jLabel1.setText("Znamienko");
+
+          jLabel2.setText("Hodnota");
+
+          bankaConditionIdBanky.setText("idBanky");
+
+          javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+          getContentPane().setLayout(layout);
+          layout.setHorizontalGroup(
+               layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+               .addGroup(layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                         .addComponent(bankaConditionIdBanky)
+                         .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 771, Short.MAX_VALUE)
+                         .addComponent(bankConditionPridaj, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                         .addComponent(bankConditionAvailableComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                         .addGroup(layout.createSequentialGroup()
+                              .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                   .addComponent(jLabel2)
+                                   .addComponent(jLabel1))
+                              .addGap(71, 71, 71)
+                              .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                   .addComponent(bankConditionMarkComboBox, 0, 638, Short.MAX_VALUE)
+                                   .addComponent(bankConditionValue)))
+                         .addGroup(layout.createSequentialGroup()
+                              .addComponent(bankConditionInterestRateLabel)
+                              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                              .addComponent(bankConditionInterestRateText)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+          );
+          layout.setVerticalGroup(
+               layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+               .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(bankaConditionIdBanky)
+                    .addGap(18, 18, 18)
+                    .addComponent(bankConditionAvailableComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                         .addComponent(bankConditionMarkComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                         .addComponent(jLabel1))
+                    .addGap(12, 12, 12)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                         .addComponent(bankConditionValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                         .addComponent(jLabel2))
+                    .addGap(18, 18, 18)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                         .addComponent(bankConditionInterestRateLabel)
+                         .addComponent(bankConditionInterestRateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(28, 28, 28)
+                    .addComponent(bankConditionPridaj)
+                    .addGap(18, 18, 18)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap())
+          );
+
+          pack();
+     }// </editor-fold>//GEN-END:initComponents
+
+     private void bankConditionPridajActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bankConditionPridajActionPerformed
+     {//GEN-HEADEREND:event_bankConditionPridajActionPerformed
+										Condition selectedCondition = (Condition) bankConditionAvailableComboBox.getSelectedItem();
+										/*no selectedCondition*/
+										if(selectedCondition == null)
+										{
+															System.out.println("NO SELECTED ITEM");
+															return;
+										}
+										String interestRateString = bankConditionInterestRateText.getText();
+										String valueString = bankConditionValue.getText();
+
+										Mark mark = (Mark) bankConditionMarkComboBox.getSelectedItem();
+										Long idC = selectedCondition.getId();
+										
+										/*idC is null*/
+										if(idC == null)
+										{
+															System.out.println("NO ID CONDITION");
+															return;
+										}
+
+										try
+										{
+															Double interestRate = Double.parseDouble(interestRateString);
+															Integer value = Integer.parseInt(valueString);
+
+															/*everything ok*/
+															BankCondition newBankCondition = new BankCondition();
+
+															newBankCondition.setIdB(bankId);
+															newBankCondition.setIdC(idC);
+															newBankCondition.setMark(mark.getId());
+															newBankCondition.setValue(value);
+															newBankCondition.setChangeInterestRate(-interestRate);
+
+															bankConditionDao.addBankCondition(newBankCondition);
+															prepareBankConditionTable();
+										}
+										catch(NumberFormatException e)
+										{
+															/*parsing error*/
+															System.out.println("PARSE ERROR");
+															return;
+										}
+
+
+     }//GEN-LAST:event_bankConditionPridajActionPerformed
+
+     private void bankConditionInterestRateTextActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bankConditionInterestRateTextActionPerformed
+     {//GEN-HEADEREND:event_bankConditionInterestRateTextActionPerformed
+										// TODO add your handling code here:
+     }//GEN-LAST:event_bankConditionInterestRateTextActionPerformed
+
+     private void bankConditionMarkComboBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bankConditionMarkComboBoxActionPerformed
+     {//GEN-HEADEREND:event_bankConditionMarkComboBoxActionPerformed
+          // TODO add your handling code here:
+     }//GEN-LAST:event_bankConditionMarkComboBoxActionPerformed
+
+
+     // Variables declaration - do not modify//GEN-BEGIN:variables
+     private javax.swing.JTable bankBankConditions;
+     private javax.swing.JComboBox bankConditionAvailableComboBox;
+     private javax.swing.JLabel bankConditionInterestRateLabel;
+     private javax.swing.JTextField bankConditionInterestRateText;
+     private javax.swing.JComboBox bankConditionMarkComboBox;
+     private javax.swing.JButton bankConditionPridaj;
+     private javax.swing.JTextField bankConditionValue;
+     private javax.swing.JLabel bankaConditionIdBanky;
+     private javax.swing.JLabel jLabel1;
+     private javax.swing.JLabel jLabel2;
+     private javax.swing.JScrollPane jScrollPane3;
+     // End of variables declaration//GEN-END:variables
+
+}

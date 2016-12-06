@@ -1,0 +1,33 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->  
+
+<hibernate-configuration>  
+    <session-factory>  
+   <!--       <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>  
+        <property name="hibernate.connection.username">sql8146988</property>  
+        <property name="hibernate.connection.password">lFLxCp9Q9P</property>
+        <property name="hibernate.connection.url">jdbc:mysql://sql8.freesqldatabase.com:3306/sql8146988?useSSL=true</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>  
+        <property name="show_sql">true</property>   
+        <property name="connection.pool_size">5</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.id.new_generator_mappings">false</property>
+
+        -->
+         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>  
+        <property name="hibernate.connection.username">swi2</property>  
+        <property name="hibernate.connection.password">Miska*</property>
+        <property name="hibernate.connection.url">jdbc:mysql://db4free.net:3306/swidatabase?useSSL=true</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>  
+        <property name="show_sql">true</property>   
+        <property name="connection.pool_size">5</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.id.new_generator_mappings">false</property>
+        <!-- here all entities will come -->
+        <mapping class="core.db.entity.AccountStatements"/>
+        <mapping class="core.db.entity.Bank"/>
+        <mapping class="core.db.entity.BankCondition"/>
+        <mapping class="core.db.entity.Condition"/>
+        <mapping class="core.db.entity.User"/>
+         
+    </session-factory>  
+</hibernate-configuration> 
