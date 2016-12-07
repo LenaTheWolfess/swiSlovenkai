@@ -70,7 +70,7 @@ public class DescriptedBankCondition {
 
     @Override
     public String toString() {
-        return description + mark.toString() + value;
+        return description +" "+ mark.toString()+" "+ value;
     }
 
 }

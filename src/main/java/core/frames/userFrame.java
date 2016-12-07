@@ -56,7 +56,7 @@ public class userFrame extends javax.swing.JFrame {
      * vypocita vysku splatky a zaplatenu sumu podla poctu rokov splacanie <br>
      * aktualizuje tabulku s vysledkami <br>
      * @param pocetRokov doba splacanie pozicky v rokoch
-     * @param suma vyska pouzicky
+     * @param suma vyska puozicky
      */
     private void vyhladajBanky(int pocetRokov, double suma) {
         Map<Bank, Double> result = new HashMap<Bank, Double>();

@@ -6,7 +6,6 @@ import core.db.ints.UserDao;
 import java.util.ArrayList;
 import org.hibernate.Session;
 import java.util.List;
-import java.util.logging.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
