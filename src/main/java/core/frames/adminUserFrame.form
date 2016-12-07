@@ -23,7 +23,6 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="adminUserFrameDeleteUserButton" max="32767" attributes="0"/>
                   <Component id="jScrollPane1" pref="948" max="32767" attributes="0"/>
                   <Component id="adminUserFrameAddUserButton" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
@@ -42,6 +41,7 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
+          <Component id="adminUserFrameDeleteUserButton" alignment="1" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">

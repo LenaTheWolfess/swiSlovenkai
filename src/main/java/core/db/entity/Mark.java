@@ -6,37 +6,37 @@
 package core.db.entity;
 
 /**
- *
+ * Reprezentant Mark z BankCondition
+ * @see BankCondition
  * @author Slavomír
  */
-public class Mark
-{
-								private Long id;
-								private String text;
-								private String popis;
+public class Mark {
 
-					public Mark(Long id, String text)
-					{
-										this.id = id;
-										this.text = text;
-										this.popis = popis;
-					}
+    private Long id;
+    private String text;
 
-					public Long getId()
-					{
-										return id;
-					}
+    /***
+     * vytvori novy ojekt Mark
+     * @param id mark v BankCondition
+     * @param text znamienko podla mark v BankCondition
+     * @see BankCondition.getMark()
+     */
+    public Mark(Long id, String text) {
+        this.id = id;
+        this.text = text;
+    }
 
-					public String getText()
-					{
-										return text;
-					}
+    public Long getId() {
+        return id;
+    }
 
-					@Override
-					public String toString()
-					{
-										return text;
-					}
-							
-						
+    public String getText() {
+        return text;
+    }
+
+    @Override
+    public String toString() {
+        return text;
+    }
+
 }

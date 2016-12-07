@@ -17,7 +17,7 @@ public class loginFrame extends javax.swing.JFrame {
     private User user;
     
     /**
-     * Creates new form loginFrame
+     * Vytvori novy loginFrame
      */
     public loginFrame() {
         initComponents();

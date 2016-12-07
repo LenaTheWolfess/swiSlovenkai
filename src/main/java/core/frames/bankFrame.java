@@ -15,119 +15,109 @@ import core.db.impl.ConditionDaoImpl;
 import core.db.ints.BankConditionDao;
 import core.db.ints.BankDao;
 import core.db.ints.ConditionDao;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
  * @author Rastislav, Martin
  */
-public class bankFrame extends javax.swing.JFrame
-{
+public class bankFrame extends javax.swing.JFrame {
 
-					private User userF;
-					private ConditionDao conditionDao = new ConditionDaoImpl();
-					private BankConditionDao bankConditionDao = new BankConditionDaoImpl();
-					private BankDao bankDao = new BankDaoImpl();
+    private User userF;
+    private ConditionDao conditionDao = new ConditionDaoImpl();
+    private BankConditionDao bankConditionDao = new BankConditionDaoImpl();
+    private BankDao bankDao = new BankDaoImpl();
 
-					public void prepareLabels()
-					{
-										Long idB = userF.getIdB();
-										Bank bank = bankDao.getById(idB);
-										if(bank==null)
-															return;
-										
-										bankFrameInterestRateLabel.setText("Základná úroková sadzba : "+bank.getPrimeInterestRate());
-										bankFrameIdBankLabel.setText("Id Banky : "+bank.getId());
-					}
-					
-					public void prepareBankConditionTable()
-					{
+    /***
+     * pripravy Labels v JFrame
+     */
+    public void prepareLabels() {
+        Long idB = userF.getIdB();
+        Bank bank = bankDao.getById(idB);
+        if (bank == null) {
+            return;
+        }
 
-										DefaultTableModel tableModel = (DefaultTableModel) bankFrameBankConditionsTable.getModel();
-										List<Condition> conditions = conditionDao.getAll();
-										bankFrameBankConditionsTable.removeAll();
+        bankFrameInterestRateLabel.setText("Základná úroková sadzba : " + bank.getPrimeInterestRate());
+        bankFrameIdBankLabel.setText("Id Banky : " + bank.getId());
+    }
 
-										List<BankCondition> bankConditions = bankConditionDao.getByBankId(userF.getIdB());
+    /***
+     * pripravi / aktualizuje tabulku podmienok pouzivanych bankou
+     */
+    public void prepareBankConditionTable() {
 
-										tableModel.setNumRows(bankConditions.size());
-										for(int i = 0; i < bankConditions.size(); i++)
-										{
-															BankCondition bc = bankConditions.get(i);
-															Long id = bc.getId();
+        DefaultTableModel tableModel = (DefaultTableModel) bankFrameBankConditionsTable.getModel();
+        List<Condition> conditions = conditionDao.getAll();
+        bankFrameBankConditionsTable.removeAll();
 
-															String description = "";
-															for(Condition con : conditions)
-															{
-																				if(con.getId().equals(bc.getIdC()))
-																				{
-																									description = description + con.getDescription();
-																									break;
-																				}
-															}
+        List<BankCondition> bankConditions = bankConditionDao.getByBankId(userF.getIdB());
 
-															boolean valued = (bc.getValue() != null);
+        tableModel.setNumRows(bankConditions.size());
+        for (int i = 0; i < bankConditions.size(); i++) {
+            BankCondition bc = bankConditions.get(i);
+            Long id = bc.getId();
 
-															if(valued)
-															{
-																				/*mark*/
-																				int mark = bc.getMark().intValue();
-																				switch(mark)
-																				{
-																									case 0:
-																														description = description + " = ";
-																														break;
-																									case 1:
-																														description = description + " >= ";
-																														break;
-																									case 2:
-																														description = description + " > ";
-																														break;
-																									case -1:
-																														description = description + " <= ";
-																														break;
-																									case -2:
-																														description = description + " < ";
-																														break;
-																									default:
-																														break;
-																				}
-																				/*value*/
+            String description = "";
+            for (Condition con : conditions) {
+                if (con.getId().equals(bc.getIdC())) {
+                    description = description + con.getDescription();
+                    break;
+                }
+            }
 
-																				description = description + bc.getValue();
+            boolean valued = (bc.getValue() != null);
 
-															}
-															description = description + " ( " + (bc.getChangeInterestRate()) + "% )";
+            if (valued) {
+                /*mark*/
+                int mark = bc.getMark().intValue();
+                switch (mark) {
+                    case 0:
+                        description = description + " = ";
+                        break;
+                    case 1:
+                        description = description + " >= ";
+                        break;
+                    case 2:
+                        description = description + " > ";
+                        break;
+                    case -1:
+                        description = description + " <= ";
+                        break;
+                    case -2:
+                        description = description + " < ";
+                        break;
+                    default:
+                        break;
+                }
+                description = description + bc.getValue();
 
-															tableModel.setValueAt(id, i, 0);
-															tableModel.setValueAt(description, i, 1);
-										}
-					}
+            }
+            description = description + " ( " + (bc.getChangeInterestRate()) + "% )";
 
-					/**
-					 * Creates new form bankFrame
-					 */
-					public bankFrame(User user)
-					{
-										userF = user;
-										initComponents();
-										prepareBankConditionTable();
-										prepareLabels();
-					}
+            tableModel.setValueAt(id, i, 0);
+            tableModel.setValueAt(description, i, 1);
+        }
+    }
 
-					/**
-					 * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
-					 */
-					@SuppressWarnings("unchecked")
+    /**
+     * Vytvori novy bankFrame a nastavi prostredi
+     * @param user prihlaseny uzivatel
+     */
+    public bankFrame(User user) {
+        userF = user;
+        initComponents();
+        prepareBankConditionTable();
+        prepareLabels();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
      // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
      private void initComponents()
      {
@@ -269,68 +259,72 @@ public class bankFrame extends javax.swing.JFrame
 
     private void bankFrameAddBankConditionFrameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bankFrameAddBankConditionFrameButtonActionPerformed
 
-									bankConditionsFrame abFrame = new bankConditionsFrame(userF.getIdB(), this);
-									abFrame.setVisible(true);
+        bankConditionsFrame abFrame = new bankConditionsFrame(userF.getIdB(), this);
+        abFrame.setVisible(true);
     }//GEN-LAST:event_bankFrameAddBankConditionFrameButtonActionPerformed
 
      private void bankFrameDeleteSelectedBankConditionButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bankFrameDeleteSelectedBankConditionButtonActionPerformed
      {//GEN-HEADEREND:event_bankFrameDeleteSelectedBankConditionButtonActionPerformed
-										/*no selection*/
-										if(bankFrameBankConditionsTable.getSelectedRow() == -1)
-															return;
-										
-										Long id = (Long)bankFrameBankConditionsTable.getValueAt(bankFrameBankConditionsTable.getSelectedRow(), 0);
-										
-										/*id is null*/
-										if(id==null)
-															return;
-										
-										/*getting bankCondition to remove*/
-										BankCondition deleteBankCondition = bankConditionDao.getById(id);
-										if(deleteBankCondition==null)
-															return;
-										
-										/*everything ok*/
-										bankConditionDao.deleteBankCondition(deleteBankCondition);
-										prepareBankConditionTable();
+         /*no selection*/
+         if (bankFrameBankConditionsTable.getSelectedRow() == -1) {
+             return;
+         }
+
+         Long id = (Long) bankFrameBankConditionsTable.getValueAt(bankFrameBankConditionsTable.getSelectedRow(), 0);
+
+         /*id is null*/
+         if (id == null) {
+             return;
+         }
+
+         /*getting bankCondition to remove*/
+         BankCondition deleteBankCondition = bankConditionDao.getById(id);
+         if (deleteBankCondition == null) {
+             return;
+         }
+
+         /*everything ok*/
+         bankConditionDao.deleteBankCondition(deleteBankCondition);
+         prepareBankConditionTable();
 
      }//GEN-LAST:event_bankFrameDeleteSelectedBankConditionButtonActionPerformed
 
      private void bankaZmenUrokovuSadzbuButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bankaZmenUrokovuSadzbuButtonActionPerformed
      {//GEN-HEADEREND:event_bankaZmenUrokovuSadzbuButtonActionPerformed
-										bankSadzbaFrame sFrame = new bankSadzbaFrame(userF.getIdB(), this);
-										sFrame.setVisible(true);
+         bankSadzbaFrame sFrame = new bankSadzbaFrame(userF.getIdB(), this);
+         sFrame.setVisible(true);
      }//GEN-LAST:event_bankaZmenUrokovuSadzbuButtonActionPerformed
 
      private void bankFrameUpdateSelectedBankConditionFrameButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bankFrameUpdateSelectedBankConditionFrameButtonActionPerformed
      {//GEN-HEADEREND:event_bankFrameUpdateSelectedBankConditionFrameButtonActionPerformed
-          if(bankFrameBankConditionsTable.getSelectedRow() == -1)
-															return;
-										
-										Long id = (Long)bankFrameBankConditionsTable.getValueAt(bankFrameBankConditionsTable.getSelectedRow(), 0);
-										
-										/*id is null*/
-										if(id==null)
-															return;
-										
-										/*getting bankCondition to update*/
-										BankCondition updateBankCondition = bankConditionDao.getById(id);
-										if(updateBankCondition==null)
-															return;
-										
-										bankUpdateBankConditionFrame bFrame = new bankUpdateBankConditionFrame(userF.getIdB(),this,updateBankCondition);
+         if (bankFrameBankConditionsTable.getSelectedRow() == -1) {
+             return;
+         }
+
+         Long id = (Long) bankFrameBankConditionsTable.getValueAt(bankFrameBankConditionsTable.getSelectedRow(), 0);
+
+         /*id is null*/
+         if (id == null) {
+             return;
+         }
+
+         /*getting bankCondition to update*/
+         BankCondition updateBankCondition = bankConditionDao.getById(id);
+         if (updateBankCondition == null) {
+             return;
+         }
+
+         bankUpdateBankConditionFrame bFrame = new bankUpdateBankConditionFrame(userF.getIdB(), this, updateBankCondition);
      }//GEN-LAST:event_bankFrameUpdateSelectedBankConditionFrameButtonActionPerformed
 
      private void bankFrameHľadanieKlientovFrameButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bankFrameHľadanieKlientovFrameButtonActionPerformed
      {//GEN-HEADEREND:event_bankFrameHľadanieKlientovFrameButtonActionPerformed
-         if(userF==null)
-														return;
-						bankSearchClientsFrame bs = new bankSearchClientsFrame(userF.getIdB());
+         if (userF == null) {
+             return;
+         }
+         bankSearchClientsFrame bs = new bankSearchClientsFrame(userF.getIdB());
      }//GEN-LAST:event_bankFrameHľadanieKlientovFrameButtonActionPerformed
 
-					/**
-					 * @param args the command line arguments
-					 */
 
      // Variables declaration - do not modify//GEN-BEGIN:variables
      private javax.swing.JButton bankFrameAddBankConditionFrameButton;

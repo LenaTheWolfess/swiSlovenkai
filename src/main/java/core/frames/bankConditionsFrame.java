@@ -20,129 +20,133 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Slavomír
  */
-public class bankConditionsFrame extends javax.swing.JFrame
-{
+public class bankConditionsFrame extends javax.swing.JFrame {
 
-					private ConditionDao conditionDao = new ConditionDaoImpl();
-					private BankConditionDao bankConditionDao = new BankConditionDaoImpl();
-					private bankFrame parent = null;
-					private long bankId;
+    private ConditionDao conditionDao = new ConditionDaoImpl();
+    private BankConditionDao bankConditionDao = new BankConditionDaoImpl();
+    private bankFrame parent = null;
+    private long bankId;
 
-					public bankConditionsFrame(Long idB, bankFrame aThis)
-					{
-										initComponents();
-										this.bankId = idB;
-										this.parent = aThis;
-										bankaConditionIdBanky.setText("Id Tejto Banky je : " + idB);
-										prepareAvailableConditionComboBox();
-										prepareBankConditionTable();
-										prepareMarkComboBox();
-					}
+    /***
+     * Vytvori bankConditionFrame a nastavi prostredie
+     * @param idB id banky, ktora si ide pridavat podmienky
+     * @param aThis bankFrame, kotry volal tuto metodu
+     */
+    public bankConditionsFrame(Long idB, bankFrame aThis) {
+        initComponents();
+        this.bankId = idB;
+        this.parent = aThis;
+        bankaConditionIdBanky.setText("Id Tejto Banky je : " + idB);
+        prepareAvailableConditionComboBox();
+        prepareBankConditionTable();
+        prepareMarkComboBox();
+    }
+    
+    /***
+     * pripravi comboBox pre banku s podmienkami, ktore este nema pouzite
+     */
+    public void prepareAvailableConditionComboBox() {
+        List<Condition> conditions = conditionDao.getAll();
+        List<BankCondition> bankConditions = bankConditionDao.getByBankId(bankId);
 
-					public void prepareAvailableConditionComboBox()
-					{
-										List<Condition> conditions = conditionDao.getAll();
-										List<BankCondition> bankConditions = bankConditionDao.getByBankId(bankId);
-										
-										List<Long> usedIdConditionList = new ArrayList<>();
-										
-										for(BankCondition bc : bankConditions)
-										{
-															usedIdConditionList.add(bc.getIdC());
-										}
-										
-										for(Condition cn : conditions)
-										{
-															/*if is condition used by bank*/
-															if(usedIdConditionList.contains(cn.getId()))
-																				continue;
-															
-															bankConditionAvailableComboBox.addItem(cn);
-										}
-					}
+        List<Long> usedIdConditionList = new ArrayList<>();
 
-					public void prepareBankConditionTable()
-					{
+        for (BankCondition bc : bankConditions) {
+            usedIdConditionList.add(bc.getIdC());
+        }
 
-										DefaultTableModel tableModel = (DefaultTableModel) bankBankConditions.getModel();
-										List<Condition> conditions = conditionDao.getAll();
-										bankBankConditions.removeAll();
+        for (Condition cn : conditions) {
+            /*if is condition used by bank*/
+            if (usedIdConditionList.contains(cn.getId())) {
+                continue;
+            }
 
-										List<BankCondition> bankConditions = bankConditionDao.getByBankId(bankId);
+            bankConditionAvailableComboBox.addItem(cn);
+        }
+    }
+    /****
+     * priravi / aktualizuje tabulku aktualne pouzivanych podmienok
+     */
+    public void prepareBankConditionTable() {
 
-										tableModel.setNumRows(bankConditions.size());
-										for(int i = 0; i < bankConditions.size(); i++)
-										{
-															BankCondition bc = bankConditions.get(i);
-															Long id = bc.getId();
+        DefaultTableModel tableModel = (DefaultTableModel) bankBankConditions.getModel();
+        List<Condition> conditions = conditionDao.getAll();
+        bankBankConditions.removeAll();
 
-															String description = "";
-															for(Condition con : conditions)
-															{
-																				if(con.getId().equals(bc.getIdC()))
-																				{
-																									description = description + con.getDescription();
-																									break;
-																				}
-															}
+        List<BankCondition> bankConditions = bankConditionDao.getByBankId(bankId);
 
-															boolean valued = (bc.getValue() != null);
+        tableModel.setNumRows(bankConditions.size());
+        for (int i = 0; i < bankConditions.size(); i++) {
+            BankCondition bc = bankConditions.get(i);
+            Long id = bc.getId();
 
-															if(valued)
-															{
-																				/*mark*/
-																				int mark = bc.getMark().intValue();
-																				switch(mark)
-																				{
-																									case 0:
-																														description = description + " = ";
-																														break;
-																									case 1:
-																														description = description + " >= ";
-																														break;
-																									case 2:
-																														description = description + " > ";
-																														break;
-																									case -1:
-																														description = description + " <= ";
-																														break;
-																									case -2:
-																														description = description + " < ";
-																														break;
-																									default:
-																														break;
-																				}
-																				/*value*/
+            String description = "";
+            for (Condition con : conditions) {
+                if (con.getId().equals(bc.getIdC())) {
+                    description = description + con.getDescription();
+                    break;
+                }
+            }
 
-																				description = description + bc.getValue();
+            boolean valued = (bc.getValue() != null);
 
-															}
+            if (valued) {
+                /*mark*/
+                int mark = bc.getMark().intValue();
+                switch (mark) {
+                    case 0:
+                        description = description + " = ";
+                        break;
+                    case 1:
+                        description = description + " >= ";
+                        break;
+                    case 2:
+                        description = description + " > ";
+                        break;
+                    case -1:
+                        description = description + " <= ";
+                        break;
+                    case -2:
+                        description = description + " < ";
+                        break;
+                    default:
+                        break;
+                }
+                /*value*/
 
-															description = description + " ( " + (bc.getChangeInterestRate()) + "% )";
+                description = description + bc.getValue();
 
-															tableModel.setValueAt(id, i, 0);
-															tableModel.setValueAt(description, i, 1);
-										}
-					}
+            }
 
-					private void prepareMarkComboBox()
-					{
-										bankConditionMarkComboBox.removeAllItems();
-										bankConditionMarkComboBox.addItem(new Mark(0L, "="));
-										bankConditionMarkComboBox.addItem(new Mark(1L, ">="));
-										bankConditionMarkComboBox.addItem(new Mark(-1L, "<="));
-										bankConditionMarkComboBox.addItem(new Mark(2L, ">"));
-										bankConditionMarkComboBox.addItem(new Mark(-2L, "<"));
-										bankConditionMarkComboBox.setSelectedIndex(0);
-					}
+            description = description + " ( " + (bc.getChangeInterestRate()) + "% )";
 
-					/**
-					 * Creates new form bankConditionsFrame
-					 */
-					/**
-					 * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
-					 */
-					@SuppressWarnings("unchecked")
+            tableModel.setValueAt(id, i, 0);
+            tableModel.setValueAt(description, i, 1);
+        }
+    }
+
+    /***
+     * pripravi ComboBox pre vyber znamienka k podmienke
+     * @see Mark
+     * @see BankCondition
+     */
+    private void prepareMarkComboBox() {
+        bankConditionMarkComboBox.removeAllItems();
+        bankConditionMarkComboBox.addItem(new Mark(0L, "="));
+        bankConditionMarkComboBox.addItem(new Mark(1L, ">="));
+        bankConditionMarkComboBox.addItem(new Mark(-1L, "<="));
+        bankConditionMarkComboBox.addItem(new Mark(2L, ">"));
+        bankConditionMarkComboBox.addItem(new Mark(-2L, "<"));
+        bankConditionMarkComboBox.setSelectedIndex(0);
+    }
+
+ 
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
      // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
      private void initComponents()
      {
@@ -279,61 +283,56 @@ public class bankConditionsFrame extends javax.swing.JFrame
 
      private void bankConditionPridajActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bankConditionPridajActionPerformed
      {//GEN-HEADEREND:event_bankConditionPridajActionPerformed
-										Condition selectedCondition = (Condition) bankConditionAvailableComboBox.getSelectedItem();
-										/*no selectedCondition*/
-										if(selectedCondition == null)
-										{
-															System.out.println("NO SELECTED ITEM");
-															return;
-										}
-										String interestRateString = bankConditionInterestRateText.getText();
-										String valueString = bankConditionValue.getText();
+         Condition selectedCondition = (Condition) bankConditionAvailableComboBox.getSelectedItem();
+         /*no selectedCondition*/
+         if (selectedCondition == null) {
+             System.out.println("NO SELECTED ITEM");
+             return;
+         }
+         String interestRateString = bankConditionInterestRateText.getText();
+         String valueString = bankConditionValue.getText();
 
-										Mark mark = (Mark) bankConditionMarkComboBox.getSelectedItem();
-										Long idC = selectedCondition.getId();
-										
-										/*idC is null*/
-										if(idC == null)
-										{
-															System.out.println("NO ID CONDITION");
-															return;
-										}
+         Mark mark = (Mark) bankConditionMarkComboBox.getSelectedItem();
+         Long idC = selectedCondition.getId();
 
-										try
-										{
-															Double interestRate = Double.parseDouble(interestRateString);
-															Integer value = Integer.parseInt(valueString);
+         /*idC is null*/
+         if (idC == null) {
+             System.out.println("NO ID CONDITION");
+             return;
+         }
 
-															/*everything ok*/
-															BankCondition newBankCondition = new BankCondition();
+         try {
+             Double interestRate = Double.parseDouble(interestRateString);
+             Integer value = Integer.parseInt(valueString);
 
-															newBankCondition.setIdB(bankId);
-															newBankCondition.setIdC(idC);
-															newBankCondition.setMark(mark.getId());
-															newBankCondition.setValue(value);
-															newBankCondition.setChangeInterestRate(-interestRate);
+             /*everything ok*/
+             BankCondition newBankCondition = new BankCondition();
 
-															bankConditionDao.addBankCondition(newBankCondition);
-															prepareBankConditionTable();
-										}
-										catch(NumberFormatException e)
-										{
-															/*parsing error*/
-															System.out.println("PARSE ERROR");
-															return;
-										}
+             newBankCondition.setIdB(bankId);
+             newBankCondition.setIdC(idC);
+             newBankCondition.setMark(mark.getId());
+             newBankCondition.setValue(value);
+             newBankCondition.setChangeInterestRate(-interestRate);
+
+             bankConditionDao.addBankCondition(newBankCondition);
+             prepareBankConditionTable();
+         } catch (NumberFormatException e) {
+             /*parsing error*/
+             System.out.println("PARSE ERROR");
+             return;
+         }
 
 
      }//GEN-LAST:event_bankConditionPridajActionPerformed
 
      private void bankConditionInterestRateTextActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bankConditionInterestRateTextActionPerformed
      {//GEN-HEADEREND:event_bankConditionInterestRateTextActionPerformed
-										// TODO add your handling code here:
+         // TODO add your handling code here:
      }//GEN-LAST:event_bankConditionInterestRateTextActionPerformed
 
      private void bankConditionMarkComboBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bankConditionMarkComboBoxActionPerformed
      {//GEN-HEADEREND:event_bankConditionMarkComboBoxActionPerformed
-          // TODO add your handling code here:
+         // TODO add your handling code here:
      }//GEN-LAST:event_bankConditionMarkComboBoxActionPerformed
 
 
