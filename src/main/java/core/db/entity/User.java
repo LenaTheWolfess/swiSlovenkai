@@ -1,6 +1,5 @@
 package core.db.entity;
 
-import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -58,14 +56,14 @@ public class User implements java.io.Serializable {
 /**
  * vracia id banky - vyznam sa lisi od role uzivatela
  * <p>
- * rola = "administrator" -  id banky ??
+ * rola = "administrator" -  id lubovolnej banky, tato banka sa nesmie zmazat
  * <p>
  * rola = "bank" -  id banky ktoru spravuje
  * <p>
  * rola = "user" -  id banky v ktorej ma ucet
  * @return vracia id banky 
- * @see getRole
- * @see setRole
+ * @see #getRole
+ * @see #setRole
  */
     public Long getIdB() {
         return idB;
@@ -73,13 +71,14 @@ public class User implements java.io.Serializable {
 /**
  * nastavuje id banky - vyznam sa lisi od role uzivatela
  * <p>
- * rola = "administrator" - nastavuje id banky ??
+ * rola = "administrator" -  id lubovolnej banky, tato banka sa nesmie zmazat
  * <p>
  * rola = "bank" -  id banky ktoru spravuje
  * <p>
  * rola = "user" -  id banky v ktorej ma ucet
- * @see getRole()
- * @see setRole(String role)
+ * @param idB id banky, NotNull
+ * @see #getRole()
+ * @see #setRole(String role)
  */
     public void setIdB(Long idB) {
         this.idB = idB;
@@ -105,7 +104,7 @@ public class User implements java.io.Serializable {
  * "bank" - spravuje danu banku
  * <p>
  * "user" - klient 
- * @param role rola uzivatela, lenght = <1,25>,NotNull,Set{"administrator","bank","user"}
+ * @param role rola uzivatela,dĺžka od 1 do = 25,NotNull,Set{"administrator","bank","user"}
  */
     public void setRole(String role) {
         this.role = role;
@@ -119,7 +118,7 @@ public class User implements java.io.Serializable {
     }
 /**
  * nastavuje meno uzivatela
- * @param name meno uzivatela,NotNull,lenght=<1,25>
+ * @param name meno uzivatela,NotNull,dĺžka od 1 do = 25
  */
     public void setName(String name) {
         this.name = name;
