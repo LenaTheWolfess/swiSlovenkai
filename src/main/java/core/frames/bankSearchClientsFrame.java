@@ -8,7 +8,6 @@ package core.frames;
 import core.db.entity.BankCondition;
 import core.db.entity.Condition;
 import core.db.entity.DescriptedBankCondition;
-import core.db.entity.DescriptedBankConditionCellRenderer;
 import core.db.entity.Mark;
 import core.db.impl.BankConditionDaoImpl;
 import core.db.impl.ConditionDaoImpl;
@@ -45,37 +44,15 @@ public class bankSearchClientsFrame extends javax.swing.JFrame
 
 										List<DescriptedBankCondition> dscBc = new ArrayList<DescriptedBankCondition>();
 
-										for(int i = 0; i < bankConditions.size(); i++)
+										for(BankCondition bc : bankConditions)
 										{
-															BankCondition bc = bankConditions.get(i);
 															Long id = bc.getId();
 
 															String description = "";
 															Condition con = conditionDao.getById(bc.getIdC());
 
-															Mark myMark = null;
-															int mark = bc.getMark().intValue();
-															switch(mark)
-															{
-																				case 0:
-																									myMark = new Mark(0L, "=");
-																									break;
-																				case 1:
-																									myMark = new Mark(1L, ">=");
-																									break;
-																				case 2:
-																									myMark = new Mark(2L, ">");
-																									break;
-																				case -1:
-																									myMark = new Mark(-1L, "<=");
-																									break;
-																				case -2:
-																									myMark = new Mark(-2L, "<");
-																									break;
-																				default:
-																									break;
-															}
-															DescriptedBankCondition ds = new DescriptedBankCondition(con.getDescription(), idB, con.getId(), bc.getId(), myMark, bc.getValue(), bc.getChangeInterestRate());
+															
+															DescriptedBankCondition ds = new DescriptedBankCondition(bc,con);
 															dscBc.add(ds);
 														
 										}
@@ -101,7 +78,8 @@ public class bankSearchClientsFrame extends javax.swing.JFrame
 
           jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-          bankConditionsList.setCellRenderer(new DescriptedBankConditionCellRenderer());
+          setTitle("Banka Hladanie Klientov");
+
           bankConditionsList.addMouseListener(new java.awt.event.MouseAdapter()
           {
                public void mouseClicked(java.awt.event.MouseEvent evt)

@@ -11,78 +11,29 @@ package core.db.entity;
  */
 public class DescriptedBankCondition
 {
-					private String description;
-					private Long idB;
-					private Long idC;
-					private Long id;
-					private Mark mark;
-					private double value;
-					private double rate;
-
-					private boolean selected; 
+					private BankCondition bankCondition;
+					private Condition condition;
 					
-					public DescriptedBankCondition(String description, Long idB, Long idC, Long id, Mark mark, double value, double rate)
+					public DescriptedBankCondition(BankCondition bankCondition, Condition condition)
 					{
-										this.description = description;
-										this.idB = idB;
-										this.idC = idC;
-										this.id = id;
-										this.mark = mark;
-										this.value = value;
-										this.rate = rate;
-										this.selected = false;
+										this.bankCondition= bankCondition;
+										this.condition = condition;
+					}
+
+					public BankCondition getBankCondition()
+					{
+										return bankCondition;
+					}
+
+					public Condition getCondition()
+					{
+										return condition;
 					}
 					
-					
-					public boolean isSelected()
-					{
-										return this.selected;
-					}
-					
-					public void actionClick()
-					{
-										selected = !selected;
-					}
-					
-					public String getDescription()
-					{
-										return description;
-					}
-
-					public Long getIdB()
-					{
-										return idB;
-					}
-
-					public Long getIdC()
-					{
-										return idC;
-					}
-
-					public Long getId()
-					{
-										return id;
-					}
-
-					public Mark getMark()
-					{
-										return mark;
-					}
-
-					public double getValue()
-					{
-										return value;
-					}
-
-					public double getRate()
-					{
-										return rate;
-					}
-
 					@Override
 					public String toString()
 					{
-										return description + mark.toString()+value;
+										return condition.toString() + bankCondition.toString();
 					}					
 					
 }

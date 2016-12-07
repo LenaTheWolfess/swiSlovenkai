@@ -9,6 +9,7 @@ import core.db.entity.User;
 import core.db.entity.Bank;
 import core.db.entity.BankCondition;
 import core.db.entity.Condition;
+import core.db.entity.DescriptedBankCondition;
 import core.db.impl.BankConditionDaoImpl;
 import core.db.impl.BankDaoImpl;
 import core.db.impl.ConditionDaoImpl;
@@ -29,7 +30,7 @@ import javax.swing.table.TableModel;
 
 /**
  *
- * @author Rastislav, Martin
+ * @author Rastislav, Martin, Slovenkai
  */
 public class bankFrame extends javax.swing.JFrame
 {
@@ -60,57 +61,21 @@ public class bankFrame extends javax.swing.JFrame
 										List<BankCondition> bankConditions = bankConditionDao.getByBankId(userF.getIdB());
 
 										tableModel.setNumRows(bankConditions.size());
-										for(int i = 0; i < bankConditions.size(); i++)
+										int i = 0 ;
+										for(BankCondition bc : bankConditions)
 										{
-															BankCondition bc = bankConditions.get(i);
 															Long id = bc.getId();
 
-															String description = "";
-															for(Condition con : conditions)
-															{
-																				if(con.getId().equals(bc.getIdC()))
-																				{
-																									description = description + con.getDescription();
-																									break;
-																				}
-															}
-
-															boolean valued = (bc.getValue() != null);
-
-															if(valued)
-															{
-																				/*mark*/
-																				int mark = bc.getMark().intValue();
-																				switch(mark)
-																				{
-																									case 0:
-																														description = description + " = ";
-																														break;
-																									case 1:
-																														description = description + " >= ";
-																														break;
-																									case 2:
-																														description = description + " > ";
-																														break;
-																									case -1:
-																														description = description + " <= ";
-																														break;
-																									case -2:
-																														description = description + " < ";
-																														break;
-																									default:
-																														break;
-																				}
-																				/*value*/
-
-																				description = description + bc.getValue();
-
-															}
-															description = description + " ( " + (bc.getChangeInterestRate()) + "% )";
-
-															tableModel.setValueAt(id, i, 0);
-															tableModel.setValueAt(description, i, 1);
+															Condition con = conditionDao.getById(bc.getIdC());
+									
+															DescriptedBankCondition ds = new DescriptedBankCondition(bc,con);
+															tableModel.setValueAt(ds, i, 0);
+															double ir = bc.getChangeInterestRate();
+															tableModel.setValueAt(ir+"%", i, 1);
+															i++;
+														
 										}
+
 					}
 
 					/**
@@ -164,13 +129,13 @@ public class bankFrame extends javax.swing.JFrame
                },
                new String []
                {
-                    "Id", "Description"
+                    "Aktivna podmienka","Zmena uroku"
                }
           )
           {
                Class[] types = new Class []
                {
-                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                    DescriptedBankCondition.class,String.class
                };
 
                public Class getColumnClass(int columnIndex)
@@ -279,14 +244,14 @@ public class bankFrame extends javax.swing.JFrame
 										if(bankFrameBankConditionsTable.getSelectedRow() == -1)
 															return;
 										
-										Long id = (Long)bankFrameBankConditionsTable.getValueAt(bankFrameBankConditionsTable.getSelectedRow(), 0);
+										DescriptedBankCondition descriptedBankCondition = (DescriptedBankCondition)bankFrameBankConditionsTable.getValueAt(bankFrameBankConditionsTable.getSelectedRow(), 0);
 										
 										/*id is null*/
-										if(id==null)
+										if(descriptedBankCondition==null)
 															return;
 										
 										/*getting bankCondition to remove*/
-										BankCondition deleteBankCondition = bankConditionDao.getById(id);
+										BankCondition deleteBankCondition = descriptedBankCondition.getBankCondition();
 										if(deleteBankCondition==null)
 															return;
 										
@@ -307,14 +272,14 @@ public class bankFrame extends javax.swing.JFrame
           if(bankFrameBankConditionsTable.getSelectedRow() == -1)
 															return;
 										
-										Long id = (Long)bankFrameBankConditionsTable.getValueAt(bankFrameBankConditionsTable.getSelectedRow(), 0);
+										DescriptedBankCondition descriptedBankCondition = (DescriptedBankCondition)bankFrameBankConditionsTable.getValueAt(bankFrameBankConditionsTable.getSelectedRow(), 0);
 										
 										/*id is null*/
-										if(id==null)
+										if(descriptedBankCondition==null)
 															return;
 										
 										/*getting bankCondition to update*/
-										BankCondition updateBankCondition = bankConditionDao.getById(id);
+										BankCondition updateBankCondition = descriptedBankCondition.getBankCondition();
 										if(updateBankCondition==null)
 															return;
 										

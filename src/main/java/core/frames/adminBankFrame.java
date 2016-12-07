@@ -25,7 +25,7 @@ import javax.swing.text.MaskFormatter;
 
 /**
  *
- * @author Rastislav
+ * @author Rastislav,Slovenkai
  */
 public class adminBankFrame extends javax.swing.JFrame
 {
@@ -39,18 +39,13 @@ public class adminBankFrame extends javax.swing.JFrame
 										List<Bank> bankList = bankDao.getAll();
 										adminBankFrameBankTable.removeAll();
 										tableModel.setNumRows(bankList.size());
-										for(int i = 0; i < bankList.size(); i++)
+										int i = 0;
+										for(Bank bank : bankList)
 										{
-															Long id = bankList.get(i).getId();
-															String name = bankList.get(i).getName();
-															Double rating = bankList.get(i).getPrimeInterestRate();
-															Object[] data =
-															{
-																				id, name, rating
-															};
-															tableModel.setValueAt(id, i, 0);
-															tableModel.setValueAt(name, i, 1);
-															tableModel.setValueAt(rating, i, 2);
+															Double rating = bank.getPrimeInterestRate();
+															tableModel.setValueAt(bank, i, 0);
+															tableModel.setValueAt(rating, i, 1);
+															i++;
 										}
 					}
 					/**
@@ -81,6 +76,7 @@ public class adminBankFrame extends javax.swing.JFrame
           adminBankFrameRatingTextField = new javax.swing.JTextField();
           adminBankFrameChangeBankRatingFrame = new javax.swing.JButton();
 
+          setTitle("Administrátor Správa Bánk");
           addWindowListener(new java.awt.event.WindowAdapter()
           {
                public void windowClosed(java.awt.event.WindowEvent evt)
@@ -92,20 +88,20 @@ public class adminBankFrame extends javax.swing.JFrame
           adminBankFrameBankTable.setModel(new javax.swing.table.DefaultTableModel(
                new Object [][]
                {
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null}
+                    {null, null},
+                    {null, null},
+                    {null, null},
+                    {null, null}
                },
                new String []
                {
-                    "id", "Meno", "Rate"
+                    "Meno", "Zakladna urokova sadzba"
                }
           )
           {
                Class[] types = new Class []
                {
-                    java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
+                    Bank.class, java.lang.Double.class
                };
 
                public Class getColumnClass(int columnIndex)
@@ -245,14 +241,13 @@ public class adminBankFrame extends javax.swing.JFrame
 									/*no bank selected*/
 									if(adminBankFrameBankTable.getSelectedRow() == -1)
 														return;
-									Long id = (Long) adminBankFrameBankTable.getValueAt(adminBankFrameBankTable.getSelectedRow(), 0);
+									Bank deleteBank = (Bank)adminBankFrameBankTable.getValueAt(adminBankFrameBankTable.getSelectedRow(), 0);
 
-									/*id is null*/
-									if(id == null)
+									if(deleteBank == null)
 														return;
 
 									/*all ok*/
-									bankDao.deleteBank(bankDao.getById(id));
+									bankDao.deleteBank(deleteBank);
 									prepareTable();
     }//GEN-LAST:event_adminBankFrameDeleteBankButtonActionPerformed
 
@@ -276,7 +271,10 @@ public class adminBankFrame extends javax.swing.JFrame
 										/*no bank selected*/
 									if(adminBankFrameBankTable.getSelectedRow() == -1)
 														return;
-									Long id = (Long) adminBankFrameBankTable.getValueAt(adminBankFrameBankTable.getSelectedRow(), 0);
+									Bank bank = (Bank) adminBankFrameBankTable.getValueAt(adminBankFrameBankTable.getSelectedRow(), 0);
+									if(bank == null)
+														return;
+									Long id = bank.getId();
 
 									/*id is null*/
 									if(id == null)

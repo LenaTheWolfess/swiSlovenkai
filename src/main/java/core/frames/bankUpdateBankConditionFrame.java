@@ -44,7 +44,7 @@ public class bankUpdateBankConditionFrame extends javax.swing.JFrame
 														return;
 									}
 								 bankUpdateBankConditionFrameDescriptionCondition.setText(con.getDescription());
-								 rateTextField.setText(""+bankCondition.getChangeInterestRate());
+								 rateTextField.setText(""+(-bankCondition.getChangeInterestRate()));
 								 valueTextField.setText(""+bankCondition.getValue());
 								
 										bankUpdateBankConditionFrameMarkComboBox.removeAllItems();
@@ -76,6 +76,8 @@ public class bankUpdateBankConditionFrame extends javax.swing.JFrame
           jLabel1 = new javax.swing.JLabel();
           jLabel2 = new javax.swing.JLabel();
           jLabel3 = new javax.swing.JLabel();
+
+          setTitle("Banka Upravenie Nastavenej Podmienky");
 
           bankUpdateBankConditionFrameDescriptionCondition.setText("popisPodmienky");
 
@@ -179,7 +181,7 @@ public class bankUpdateBankConditionFrame extends javax.swing.JFrame
 															/*everything ok*/
 															selectedBankCondition.setMark(mark.getId());
 															selectedBankCondition.setValue(value);
-															selectedBankCondition.setChangeInterestRate(interestRate);
+															selectedBankCondition.setChangeInterestRate(-interestRate);
 
 															bankConditionDao.updateBankCondition(selectedBankCondition);
 															parentFrame.prepareBankConditionTable();

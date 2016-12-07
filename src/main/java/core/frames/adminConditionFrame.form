@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="title" type="java.lang.String" value="Administr&#xe1;tor Spr&#xe1;va Podmienok"/>
+  </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
@@ -120,12 +123,8 @@
       <SubComponents>
         <Component class="javax.swing.JTable" name="adminConditionFrameConditionsTable">
           <Properties>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="3" rowCount="4">
-                <Column editable="true" title="Id" type="java.lang.Integer"/>
-                <Column editable="true" title="Description" type="java.lang.String"/>
-                <Column editable="true" title="Expression" type="java.lang.String"/>
-              </Table>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new javax.swing.table.DefaultTableModel(&#xa;     new Object [][]&#xa;     {&#xa;          {null, null},&#xa;          {null, null},&#xa;          {null, null},&#xa;          {null, null}&#xa;     },&#xa;     new String []&#xa;     {&#xa;          &quot;Popis podmienky&quot;, &quot;Sql Vyraz&quot;&#xa;     }&#xa;)&#xa;{&#xa;     Class[] types = new Class []&#xa;     {&#xa;          Condition.class, java.lang.String.class&#xa;     };&#xa;&#xa;     public Class getColumnClass(int columnIndex)&#xa;     {&#xa;          return types [columnIndex];&#xa;     }&#xa;}" type="code"/>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>

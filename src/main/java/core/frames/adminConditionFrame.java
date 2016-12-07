@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Rastislav
+ * @author Rastislav, Slovenkai
  */
 public class adminConditionFrame extends javax.swing.JFrame
 {
@@ -32,16 +32,14 @@ public class adminConditionFrame extends javax.swing.JFrame
 										List<Condition> conditions = conditionDao.getAll();
 										adminConditionFrameConditionsTable.removeAll();
 										tableModel.setNumRows(conditions.size());
-										
-										for(int i = 0; i < conditions.size(); i++)
+										int i = 0;
+										for(Condition condition : conditions)
 										{
-															Long id = conditions.get(i).getId();
-															String description = conditions.get(i).getDescription();
 															String expression = conditions.get(i).getExpression();
 
-															tableModel.setValueAt(id, i, 0);
-															tableModel.setValueAt(description, i, 1);
-															tableModel.setValueAt(expression, i, 2);
+															tableModel.setValueAt(condition, i, 0);
+															tableModel.setValueAt(expression, i, 1);
+															i++;
 										}
 					}
 
@@ -73,6 +71,8 @@ public class adminConditionFrame extends javax.swing.JFrame
           adminConditionFrameConditionsTable = new javax.swing.JTable();
           adminConditionFrameRemoveCondition = new javax.swing.JButton();
 
+          setTitle("Administrátor Správa Podmienok");
+
           adminCinditionFrameDescriptionTextArea.setColumns(20);
           adminCinditionFrameDescriptionTextArea.setRows(5);
           jScrollPane1.setViewportView(adminCinditionFrameDescriptionTextArea);
@@ -97,20 +97,20 @@ public class adminConditionFrame extends javax.swing.JFrame
           adminConditionFrameConditionsTable.setModel(new javax.swing.table.DefaultTableModel(
                new Object [][]
                {
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null},
-                    {null, null, null}
+                    {null, null},
+                    {null, null},
+                    {null, null},
+                    {null, null}
                },
                new String []
                {
-                    "Id", "Description", "Expression"
+                    "Popis podmienky", "Sql Vyraz"
                }
           )
           {
                Class[] types = new Class []
                {
-                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                    Condition.class, java.lang.String.class
                };
 
                public Class getColumnClass(int columnIndex)
@@ -200,14 +200,12 @@ public class adminConditionFrame extends javax.swing.JFrame
 										if(adminConditionFrameConditionsTable.getSelectedRow()==-1)
 															return;
 										
-										Long id = (Long) adminConditionFrameConditionsTable.getValueAt(adminConditionFrameConditionsTable.getSelectedRow(), 0);
+										Condition deleteCondition = (Condition) adminConditionFrameConditionsTable.getValueAt(adminConditionFrameConditionsTable.getSelectedRow(), 0);
 
-										/*id is null*/
-										if(id == null)
+										if(deleteCondition == null)
 															return;
 
 										/*everything ok*/
-										Condition deleteCondition = conditionDao.getById(id);
 										conditionDao.deleteCondition(deleteCondition);
 										prepareConditionTable();
 

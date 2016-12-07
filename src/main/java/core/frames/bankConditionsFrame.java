@@ -7,6 +7,7 @@ package core.frames;
 
 import core.db.entity.BankCondition;
 import core.db.entity.Condition;
+import core.db.entity.DescriptedBankCondition;
 import core.db.entity.Mark;
 import core.db.impl.BankConditionDaoImpl;
 import core.db.impl.ConditionDaoImpl;
@@ -71,57 +72,26 @@ public class bankConditionsFrame extends javax.swing.JFrame
 										List<BankCondition> bankConditions = bankConditionDao.getByBankId(bankId);
 
 										tableModel.setNumRows(bankConditions.size());
-										for(int i = 0; i < bankConditions.size(); i++)
+										
+										int i=0;
+										for(BankCondition bc : bankConditions)
 										{
-															BankCondition bc = bankConditions.get(i);
 															Long id = bc.getId();
-
-															String description = "";
+															DescriptedBankCondition ds = null;
 															for(Condition con : conditions)
 															{
 																				if(con.getId().equals(bc.getIdC()))
 																				{
-																									description = description + con.getDescription();
+																									ds = new DescriptedBankCondition(bc, con);
 																									break;
 																				}
 															}
-
-															boolean valued = (bc.getValue() != null);
-
-															if(valued)
-															{
-																				/*mark*/
-																				int mark = bc.getMark().intValue();
-																				switch(mark)
-																				{
-																									case 0:
-																														description = description + " = ";
-																														break;
-																									case 1:
-																														description = description + " >= ";
-																														break;
-																									case 2:
-																														description = description + " > ";
-																														break;
-																									case -1:
-																														description = description + " <= ";
-																														break;
-																									case -2:
-																														description = description + " < ";
-																														break;
-																									default:
-																														break;
-																				}
-																				/*value*/
-
-																				description = description + bc.getValue();
-
-															}
-
-															description = description + " ( " + (bc.getChangeInterestRate()) + "% )";
-
-															tableModel.setValueAt(id, i, 0);
-															tableModel.setValueAt(description, i, 1);
+															if(ds==null)
+																				continue;
+															
+															tableModel.setValueAt(ds, i, 0);
+															tableModel.setValueAt(bc.getChangeInterestRate(), i, 1);
+															i++;
 										}
 					}
 
@@ -159,23 +129,22 @@ public class bankConditionsFrame extends javax.swing.JFrame
           jLabel2 = new javax.swing.JLabel();
           bankaConditionIdBanky = new javax.swing.JLabel();
 
+          setTitle("Banka Pridávanie Podmienok");
+
           bankBankConditions.setModel(new javax.swing.table.DefaultTableModel(
                new Object [][]
                {
-                    {null, null},
-                    {null, null},
-                    {null, null},
-                    {null, null}
+                    {null,null}
                },
                new String []
                {
-                    "Id", "Description"
+                    "Aktivne podmienky","Zmena uroku"
                }
           )
           {
                Class[] types = new Class []
                {
-                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                    DescriptedBankCondition.class,Double.class
                };
 
                public Class getColumnClass(int columnIndex)
@@ -315,6 +284,7 @@ public class bankConditionsFrame extends javax.swing.JFrame
 
 															bankConditionDao.addBankCondition(newBankCondition);
 															prepareBankConditionTable();
+															parent.prepareBankConditionTable();
 										}
 										catch(NumberFormatException e)
 										{

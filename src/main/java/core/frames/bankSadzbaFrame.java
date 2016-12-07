@@ -47,6 +47,8 @@ public class bankSadzbaFrame extends javax.swing.JFrame
           zmenZakladnyUrokButton = new javax.swing.JButton();
           jLabel1 = new javax.swing.JLabel();
 
+          setTitle("Zmena Základnej úrokovej Sadzby");
+
           sadzbaOknoText.setText("0.0");
 
           zmenZakladnyUrokButton.setText("Zmeniť");

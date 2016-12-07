@@ -25,7 +25,7 @@ import javax.swing.table.TableModel;
 
 /**
  *
- * @author Rastislav, Martin
+ * @author Rastislav, Slovenkai
  */
 public class adminUserFrame extends javax.swing.JFrame
 {
@@ -43,20 +43,17 @@ public class adminUserFrame extends javax.swing.JFrame
 										List<User> users = userDao.getAll();
 										jTable1.removeAll();
 										tableModel.setNumRows(users.size());
-										for(int i = 0; i < users.size(); i++)
+										int i = 0;
+										for(User user : users)
 										{
-															Long id = users.get(i).getId();
-															Long idB = users.get(i).getIdB();
-															String role = users.get(i).getRole();
-															String meno = users.get(i).getName();
-															Object[] data =
-															{
-																				id, idB, role, meno
-															};
-															tableModel.setValueAt(id, i, 0);
-															tableModel.setValueAt(idB, i, 1);
-															tableModel.setValueAt(role, i, 2);
-															tableModel.setValueAt(meno, i, 3);
+															Long id = user.getId();
+															Long idB = user.getIdB();
+															String role = user.getRole();
+															Bank bank  = bankDao.getById(idB);
+															tableModel.setValueAt(bank, i, 0);
+															tableModel.setValueAt(role, i, 1);
+															tableModel.setValueAt(user, i, 2);
+															i++;
 										}
 					}
 
@@ -98,23 +95,25 @@ public class adminUserFrame extends javax.swing.JFrame
           rolaComboBox1 = new javax.swing.JComboBox<String>();
           adminUserFrameBankIdComboBox = new javax.swing.JComboBox();
 
+          setTitle("administrátor správa klientov");
+
           jTable1.setModel(new javax.swing.table.DefaultTableModel(
                new Object [][]
                {
-                    {null, null, null, null},
-                    {null, null, null, null},
-                    {null, null, null, null},
-                    {null, null, null, null}
+                    {null, null, null},
+                    {null, null, null},
+                    {null, null, null},
+                    {null, null, null}
                },
                new String []
                {
-                    "Id", "IdB", "Role", "Meno"
+                    "banka", "rola", "meno"
                }
           )
           {
                Class[] types = new Class []
                {
-                    java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                    Bank.class, String.class, User.class
                };
 
                public Class getColumnClass(int columnIndex)
@@ -213,18 +212,13 @@ public class adminUserFrame extends javax.swing.JFrame
 									
 									if(jTable1.getSelectedRow()==-1)
 														return;
-									Long id = (Long) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
+									User deleteUser = (User) jTable1.getValueAt(jTable1.getSelectedRow(), 2);
 
-									/*id is null*/
-									if(id == null)
+									if(deleteUser == null)
 														return;
-									
-									/*I cannot delete myself*/
-									if(id.equals(user.getId()))
-														return;
-									
+																		
 									/*all ok*/
-									userDao.deleteUser(userDao.getById(id));
+									userDao.deleteUser(deleteUser);
 									prepareUserTable();
     }//GEN-LAST:event_adminUserFrameDeleteUserButtonActionPerformed
 

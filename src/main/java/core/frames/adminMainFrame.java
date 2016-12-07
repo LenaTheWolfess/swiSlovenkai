@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Rastislav
+ * @author Rastislav, Slovenkai
  */
 public class adminMainFrame extends javax.swing.JFrame
 {
@@ -43,6 +43,7 @@ public class adminMainFrame extends javax.swing.JFrame
           adminMainFrameConditionFrameButton = new javax.swing.JButton();
 
           setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+          setTitle("Administrátor Hlavné Okno");
 
           spravaKlientovButton1.setText("Spravovanie Klientov");
           spravaKlientovButton1.addActionListener(new java.awt.event.ActionListener()
