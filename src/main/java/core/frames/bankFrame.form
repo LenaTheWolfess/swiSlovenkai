@@ -32,19 +32,19 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane3" alignment="1" pref="690" max="32767" attributes="0"/>
                   <Component id="bankFrameDeleteSelectedBankConditionButton" alignment="1" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Component id="bankFrameInterestRateLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="bankFrameIdBankLabel" min="-2" pref="215" max="-2" attributes="0"/>
+                  <Component id="bankFrameAddBankConditionFrameButton" alignment="0" max="32767" attributes="0"/>
+                  <Component id="bankFrameUpdateSelectedBankConditionFrameButton" alignment="1" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="bankaZmenUrokovuSadzbuButton" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="bankFrameInterestRateLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="bankFrameIdBankLabel" min="-2" pref="215" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="bankFrameAddBankConditionFrameButton" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="bankaZmenUrokovuSadzbuButton" min="-2" pref="330" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="bankFrameHľadanieKlientovFrameButton" max="32767" attributes="0"/>
-                  </Group>
-                  <Component id="bankFrameUpdateSelectedBankConditionFrameButton" alignment="1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -59,10 +59,7 @@
                   <Component id="bankFrameIdBankLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="bankaZmenUrokovuSadzbuButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="bankFrameHľadanieKlientovFrameButton" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="bankaZmenUrokovuSadzbuButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="bankFrameUpdateSelectedBankConditionFrameButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -137,14 +134,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Id Banky : "/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="bankFrameH&#x13e;adanieKlientovFrameButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="H&#x13e;adanie Klientov"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bankFrameH&#x13e;adanieKlientovFrameButtonActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

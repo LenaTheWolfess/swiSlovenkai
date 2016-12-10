@@ -106,7 +106,6 @@ public class bankFrame extends javax.swing.JFrame
           bankFrameInterestRateLabel = new javax.swing.JLabel();
           bankFrameUpdateSelectedBankConditionFrameButton = new javax.swing.JButton();
           bankFrameIdBankLabel = new javax.swing.JLabel();
-          bankFrameHľadanieKlientovFrameButton = new javax.swing.JButton();
 
           jButton1.setText("jButton1");
 
@@ -176,15 +175,6 @@ public class bankFrame extends javax.swing.JFrame
 
           bankFrameIdBankLabel.setText("Id Banky : ");
 
-          bankFrameHľadanieKlientovFrameButton.setText("Hľadanie Klientov");
-          bankFrameHľadanieKlientovFrameButton.addActionListener(new java.awt.event.ActionListener()
-          {
-               public void actionPerformed(java.awt.event.ActionEvent evt)
-               {
-                    bankFrameHľadanieKlientovFrameButtonActionPerformed(evt);
-               }
-          });
-
           javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
           getContentPane().setLayout(layout);
           layout.setHorizontalGroup(
@@ -194,17 +184,16 @@ public class bankFrame extends javax.swing.JFrame
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                          .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
                          .addComponent(bankFrameDeleteSelectedBankConditionButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                         .addGroup(layout.createSequentialGroup()
-                              .addComponent(bankFrameInterestRateLabel)
-                              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                              .addComponent(bankFrameIdBankLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                              .addGap(10, 10, 10))
                          .addComponent(bankFrameAddBankConditionFrameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                         .addGroup(layout.createSequentialGroup()
-                              .addComponent(bankaZmenUrokovuSadzbuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                              .addComponent(bankFrameHľadanieKlientovFrameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                         .addComponent(bankFrameUpdateSelectedBankConditionFrameButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                         .addComponent(bankFrameUpdateSelectedBankConditionFrameButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                              .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                   .addComponent(bankaZmenUrokovuSadzbuButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                   .addGroup(layout.createSequentialGroup()
+                                        .addComponent(bankFrameInterestRateLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(bankFrameIdBankLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                              .addGap(10, 10, 10)))
                     .addContainerGap())
           );
           layout.setVerticalGroup(
@@ -215,9 +204,7 @@ public class bankFrame extends javax.swing.JFrame
                          .addComponent(bankFrameInterestRateLabel)
                          .addComponent(bankFrameIdBankLabel))
                     .addGap(18, 18, 18)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                         .addComponent(bankaZmenUrokovuSadzbuButton)
-                         .addComponent(bankFrameHľadanieKlientovFrameButton))
+                    .addComponent(bankaZmenUrokovuSadzbuButton)
                     .addGap(18, 18, 18)
                     .addComponent(bankFrameUpdateSelectedBankConditionFrameButton)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -286,13 +273,6 @@ public class bankFrame extends javax.swing.JFrame
 										bankUpdateBankConditionFrame bFrame = new bankUpdateBankConditionFrame(userF.getIdB(),this,updateBankCondition);
      }//GEN-LAST:event_bankFrameUpdateSelectedBankConditionFrameButtonActionPerformed
 
-     private void bankFrameHľadanieKlientovFrameButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_bankFrameHľadanieKlientovFrameButtonActionPerformed
-     {//GEN-HEADEREND:event_bankFrameHľadanieKlientovFrameButtonActionPerformed
-         if(userF==null)
-														return;
-						bankSearchClientsFrame bs = new bankSearchClientsFrame(userF.getIdB());
-     }//GEN-LAST:event_bankFrameHľadanieKlientovFrameButtonActionPerformed
-
 					/**
 					 * @param args the command line arguments
 					 */
@@ -301,7 +281,6 @@ public class bankFrame extends javax.swing.JFrame
      private javax.swing.JButton bankFrameAddBankConditionFrameButton;
      private javax.swing.JTable bankFrameBankConditionsTable;
      private javax.swing.JButton bankFrameDeleteSelectedBankConditionButton;
-     private javax.swing.JButton bankFrameHľadanieKlientovFrameButton;
      private javax.swing.JLabel bankFrameIdBankLabel;
      private javax.swing.JLabel bankFrameInterestRateLabel;
      private javax.swing.JButton bankFrameUpdateSelectedBankConditionFrameButton;
